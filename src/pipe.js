@@ -1,14 +1,18 @@
 import { GAME_HEIGHT, GAME_WIDTH } from './constants';
 
+const PIPE_SPACING = 125;
+const PIPE_SPEED = 6;
+const PIPE_WIDTH = 80;
+
 export class Pipe {
 	constructor(sketch) {
 		this.sketch = sketch;
-		this.spacing = 125;
-		this.top = this.sketch.random(GAME_HEIGHT / 6, (3 / 4) * GAME_HEIGHT);
+		this.spacing = PIPE_SPACING;
+		this.top = this.sketch.random(GAME_HEIGHT / PIPE_SPEED, (3 / 4) * GAME_HEIGHT);
 		this.bottom = GAME_HEIGHT - (this.top + this.spacing);
 		this.x = GAME_WIDTH;
-		this.w = 80;
-		this.speed = 6;
+		this.w = PIPE_WIDTH;
+		this.speed = PIPE_SPEED;
 	}
   
 	hits(bird) {
