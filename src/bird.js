@@ -6,13 +6,11 @@ const BIRD_LIFT = 12;
 export class Bird {
 	constructor(sketch) {
 		this.sketch = sketch;
-		this.y = GAME_HEIGHT / 2;
-		this.x = BIRD_X_POSITION;
-  
-		this.gravity = GAME_GRAVITY;
-		this.lift = BIRD_LIFT * -1;
-		this.velocity = 0;
-		this.isAlive = true;
+		this.reset();
+	}
+
+	dispose() {
+
 	}
   
 	draw() {
@@ -31,8 +29,12 @@ export class Bird {
 		}
 	}
   
-	offScreen() {
+	isOffScreen() {
 		return this.y > GAME_HEIGHT || this.y < 0;
+	}
+
+	makeBaby() {
+		return new Bird(this.sketch);
 	}
   
 	update() {
@@ -40,5 +42,16 @@ export class Bird {
   
 		this.velocity += this.gravity;
 		this.y += this.velocity;
+	}
+
+	reset() {
+		this.y = GAME_HEIGHT / 2;
+		this.x = BIRD_X_POSITION;
+  
+		this.gravity = GAME_GRAVITY;
+		this.lift = BIRD_LIFT * -1;
+		this.velocity = 0;
+		this.score = 0;
+		this.isAlive = true;
 	}
 }

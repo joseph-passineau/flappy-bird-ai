@@ -35,7 +35,7 @@ export class Pipe {
 		this.x -= this.speed;
 	}
   
-	offscreen() {
+	isOffScreen() {
 		if (this.x < -this.w) {
 			return true;
 		} else {
