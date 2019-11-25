@@ -1,30 +1,56 @@
-import { GAME_GRAVITY, GAME_HEIGHT } from './constants';
+import { GAME_GRAVITY, GAME_HEIGHT, GAME_WIDTH } from './constants';
+import { Brain } from './brain';
+import { sketch } from './index';
 
 const BIRD_X_POSITION = 64;
 const BIRD_LIFT = 12;
 
 export class Bird {
-	constructor(sketch) {
-		this.sketch = sketch;
+	constructor(brain) {
+		if(brain){
+			this.brain = brain;
+		}
+		else {
+			this.brain = new Brain();
+		}		
 		this.reset();
 	}
 
 	dispose() {
-
+		this.brain.dispose();
 	}
   
 	draw() {
-		this.sketch.stroke(255);
-		this.sketch.fill(255, 100);
-		this.sketch.ellipse(this.x, this.y, BIRD_X_POSITION / 2, BIRD_X_POSITION / 2);
+		sketch.stroke(255);
+		sketch.fill(255, 100);
+		sketch.ellipse(this.x, this.y, BIRD_X_POSITION / 2, BIRD_X_POSITION / 2);
 	}
   
 	up() {
 		this.velocity += this.lift;
 	}
   
-	think() {
-		if(Math.random() >= 0.9) {
+	think(pipes) {
+
+		let closestPipe = null;
+		let closestDistance = Infinity;
+		for (const pipe of pipes) {
+			const distance = pipe.x + pipe.width - this.x;
+			if (distance < closestDistance && distance > 0) {
+				closestPipe = pipe;
+				closestDistance = distance;
+			}
+		}
+
+		const inputs = [];
+		inputs.push(this.y / GAME_HEIGHT); // y position
+		inputs.push(closestPipe.top / GAME_HEIGHT); // pipe top position
+		inputs.push(closestPipe.bottom / GAME_HEIGHT); // pipe bottom position
+		inputs.push(closestPipe.x / GAME_WIDTH); // pipe x position
+		inputs.push(this.velocity / 10); // bird velocity
+
+		const output = this.brain.predict(inputs);
+		if(output[0] > output[1]) {
 			this.up();
 		}
 	}
@@ -34,7 +60,13 @@ export class Bird {
 	}
 
 	makeBaby() {
-		return new Bird(this.sketch);
+		const brain = this.brain.copy();
+		brain.mutate(0.1);
+		return new Bird(brain);
+	}
+
+	distanceToPipe(pipe) {
+		return pipe.x + pipe.width - this.x;
 	}
   
 	update() {

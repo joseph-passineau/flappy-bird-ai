@@ -2,21 +2,22 @@ import { GAME_HEIGHT, GAME_WIDTH, POPULATION_SIZE } from './constants';
 
 import { Bird } from './bird';
 import { Pipe } from './pipe';
-
-let counter = 0;
+import { sketch } from './index';
 
 export class Game {
-	constructor(sketch) {
-		this.sketch = sketch;
+	constructor() {
 		this.birds = [];
 		this.pipes = [];
+		this.ticks = 0;
+		this.generation = 1;
+		this.bestScore = 0;
 	}
 
 	setup() {
-		this.sketch.createCanvas(GAME_WIDTH, GAME_HEIGHT);
-		this.slider = this.sketch.createSlider(1, 10, 1);
+		sketch.createCanvas(GAME_WIDTH, GAME_HEIGHT);
+		this.slider = sketch.createSlider(1, 10, 1);
 		for (let i = 0; i < POPULATION_SIZE; i++) {
-			this.birds.push(new Bird(this.sketch));
+			this.birds.push(new Bird());
 		}
 	}
 
@@ -37,7 +38,7 @@ export class Game {
 			this.nextGeneration();
 		}
 
-		this.sketch.background(0);
+		sketch.background(0);
    
 		for (let bird of aliveBirds) {
 			bird.draw();
@@ -46,13 +47,19 @@ export class Game {
 		for (let pipe of this.pipes) {
 			pipe.draw();
 		}
+
+		sketch.text(`Generation ${this.generation}`, 0, 10);
+		sketch.text(`Birds alive ${aliveBirds.length}`, 0, 30);
+		sketch.text(`Score ${this.ticks}`, 0, 50);
+		sketch.text(`Best Score ${this.bestScore}`, 0, 70);
+		
 	}
 
 	update() {
-		if (counter % 75 == 0) {
-			this.pipes.push(new Pipe(this.sketch));
+		if (this.ticks % 75 == 0) {
+			this.pipes.push(new Pipe());
 		}
-		counter++;
+		this.ticks++;
 
 		for (let pipe of this.pipes) {
 			pipe.update();
@@ -74,8 +81,14 @@ export class Game {
 	}
 
 	nextGeneration() {
+		this.generation++;
+
+		if(this.bestScore < this.ticks){
+			this.bestScore = this.ticks;
+		}
+
 		this.calculateFitness();
-		this.birds = this.birds.sort((a, b) => (a.fitness < b.fitness) ? 1 : -1);
+		this.birds = this.birds.sort((a, b) => (a.fitness > b.fitness) ? 1 : -1);
 
 		const loosers = this.birds.splice(0, Math.ceil(this.birds.length / 2));
 
@@ -89,7 +102,7 @@ export class Game {
 			babyBirds.push(babyBird);
 		}
 
-		this.resetBirds();
+		this.reset();
 		this.birds = this.birds.concat(babyBirds);
 	}
 
@@ -101,7 +114,9 @@ export class Game {
 		}
 	}
 
-	resetBirds() {
+	reset() {
+		this.ticks = 0;
+		this.pipes = [];
 		for(const bird of this.birds) {
 			bird.reset();
 		}
