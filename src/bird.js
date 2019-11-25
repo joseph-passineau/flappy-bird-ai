@@ -1,4 +1,5 @@
 import { GAME_GRAVITY, GAME_HEIGHT, GAME_WIDTH } from './constants';
+
 import { Brain } from './brain';
 import { sketch } from './index';
 
@@ -61,7 +62,7 @@ export class Bird {
 
 	makeBaby() {
 		const brain = this.brain.copy();
-		brain.mutate(0.1);
+		brain.mutate(0.01);
 		return new Bird(brain);
 	}
 

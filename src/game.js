@@ -1,4 +1,4 @@
-import { GAME_HEIGHT, GAME_WIDTH, POPULATION_SIZE } from './constants';
+import { GAME_HEIGHT, GAME_MAX_TICKS, GAME_WIDTH, POPULATION_SIZE } from './constants';
 
 import { Bird } from './bird';
 import { Pipe } from './pipe';
@@ -34,7 +34,7 @@ export class Game {
 			}
 		}
   
-		if(aliveBirds.length === 0) {
+		if(aliveBirds.length === 0 || this.ticks >= GAME_MAX_TICKS) {
 			this.nextGeneration();
 		}
 
