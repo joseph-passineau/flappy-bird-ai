@@ -1,4 +1,4 @@
-import { GAME_GRAVITY, GAME_HEIGHT, GAME_WIDTH, GAME_MAX_SCORE } from './constants';
+import { GAME_GRAVITY, GAME_HEIGHT, GAME_WIDTH } from './constants';
 
 import { Brain } from './brain';
 import { sketch } from './index';
@@ -17,6 +17,9 @@ export class Bird {
 			this.brain = new Brain();
 		}		
 		this.reset();
+		this.red = Math.floor(Math.random()*256);
+		this.green = Math.floor(Math.random()*256);
+		this.blue = Math.floor(Math.random()*256);
 	}
 
 	dispose() {
@@ -25,7 +28,7 @@ export class Bird {
   
 	draw() {
 		sketch.stroke(255);
-		sketch.fill(255, 100);
+		sketch.fill(this.red, this.green, this.blue);
 		sketch.ellipse(this.x, this.y, BIRD_X_POSITION / 2, BIRD_X_POSITION / 2);
 	}
   
@@ -66,7 +69,13 @@ export class Bird {
 		const brain = this.brain.copy();
 		const mutationRate = this.calculateMutationRate();
 		brain.mutate(mutationRate);
-		return new Bird(brain);
+		const babyBird = new Bird(brain);
+		babyBird.red = this.red;
+		babyBird.green = this.green;
+		babyBird.blue = this.blue;
+		babyBird.changeColor();
+		return babyBird;
+
 	}
 
 	distanceToPipe(pipe) {
@@ -83,6 +92,23 @@ export class Bird {
 	calculateMutationRate() {
 		// Calculation rate using exponential Decay
 		return (Math.pow((1-(BIRD_MUTATION_DECAY_RATE_PERCENTAGE/100)), this.score) * BIRD_MUTATION_INITIAL_VALUE) / 100;
+	}
+
+	changeColor() {
+		const colorToChange = Math.floor(Math.random() * 3) + 1;
+		const colorChange = Math.random() < 0.5 ? -1 : 1;
+
+		switch(colorToChange){
+		case 1:
+			this.red + colorChange;
+			break;
+		case 2:
+			this.blue + colorChange;
+			break;
+		case 3:
+			this.green + colorChange;
+			break;
+		}
 	}
 
 	reset() {
