@@ -1,10 +1,12 @@
-import { GAME_GRAVITY, GAME_HEIGHT, GAME_WIDTH } from './constants';
+import { GAME_GRAVITY, GAME_HEIGHT, GAME_WIDTH, GAME_MAX_SCORE } from './constants';
 
 import { Brain } from './brain';
 import { sketch } from './index';
 
 const BIRD_X_POSITION = 64;
 const BIRD_LIFT = 12;
+const BIRD_MUTATION_DECAY_RATE_PERCENTAGE = 0.1;
+const BIRD_MUTATION_INITIAL_VALUE = 10;
 
 export class Bird {
 	constructor(brain) {
@@ -62,7 +64,8 @@ export class Bird {
 
 	makeBaby() {
 		const brain = this.brain.copy();
-		brain.mutate(0.01);
+		const mutationRate = this.calculateMutationRate();
+		brain.mutate(mutationRate);
 		return new Bird(brain);
 	}
 
@@ -75,6 +78,11 @@ export class Bird {
   
 		this.velocity += this.gravity;
 		this.y += this.velocity;
+	}
+
+	calculateMutationRate() {
+		// Calculation rate using exponential Decay
+		return (Math.pow((1-(BIRD_MUTATION_DECAY_RATE_PERCENTAGE/100)), this.score) * BIRD_MUTATION_INITIAL_VALUE) / 100;
 	}
 
 	reset() {
