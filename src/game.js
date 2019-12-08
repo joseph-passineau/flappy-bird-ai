@@ -1,4 +1,4 @@
-import { GAME_HEIGHT, GAME_MAX_TICKS, GAME_WIDTH, POPULATION_SIZE } from './constants';
+import { GAME_HEIGHT, GAME_MAX_TICKS, GAME_WIDTH, POPULATION_SIZE, IMMIGRATION_EPOCH } from './constants';
 
 import { Bird } from './bird';
 import { Pipe } from './pipe';
@@ -123,14 +123,22 @@ export class Game {
 			looser.dispose();
 		}
 
-		const babyBirds = [];
-		for(const bird of this.birds) {
-			const babyBird = bird.makeBaby();
-			babyBirds.push(babyBird);
+		const newBirds = [];
+		if(this.generation % IMMIGRATION_EPOCH === 0) {
+			for (let i = this.birds.length ; i < POPULATION_SIZE; i++) {
+				this.birds.push(new Bird());
+			}
+		}
+		else {
+
+			for(const bird of this.birds) {
+				const babyBird = bird.makeBaby();
+				newBirds.push(babyBird);
+			}
 		}
 
 		this.reset();
-		this.birds = this.birds.concat(babyBirds);
+		this.birds = this.birds.concat(newBirds);
 	}
 
 	calculateFitness() {
