@@ -1,23 +1,23 @@
 import { GAME_HEIGHT, GAME_WIDTH } from './constants';
+import { sketch } from './index';
 
 const PIPE_SPACING = 125;
 const PIPE_SPEED = 6;
 const PIPE_WIDTH = 80;
 
 export class Pipe {
-	constructor(sketch) {
-		this.sketch = sketch;
+	constructor() {
 		this.spacing = PIPE_SPACING;
-		this.top = this.sketch.random(GAME_HEIGHT / PIPE_SPEED, (3 / 4) * GAME_HEIGHT);
+		this.top = sketch.random(GAME_HEIGHT / PIPE_SPEED, (3 / 4) * GAME_HEIGHT);
 		this.bottom = GAME_HEIGHT - (this.top + this.spacing);
 		this.x = GAME_WIDTH;
-		this.w = PIPE_WIDTH;
+		this.width = PIPE_WIDTH;
 		this.speed = PIPE_SPEED;
 	}
   
 	hits(bird) {
 		if (bird.y < this.top || bird.y > GAME_HEIGHT - this.bottom) {
-			if (bird.x > this.x && bird.x < this.x + this.w) {
+			if (bird.x > this.x && bird.x < this.x + this.width) {
 				return true;
 			}
 		}
@@ -25,10 +25,10 @@ export class Pipe {
 	}
   
 	draw() {
-		this.sketch.fill(255);
-		this.sketch.rectMode(this.sketch.CORNER);
-		this.sketch.rect(this.x, 0, this.w, this.top);
-		this.sketch.rect(this.x, GAME_HEIGHT - this.bottom, this.w, this.bottom);
+		sketch.fill(255);
+		sketch.rectMode(sketch.CORNER);
+		sketch.rect(this.x, 0, this.width, this.top);
+		sketch.rect(this.x, GAME_HEIGHT - this.bottom, this.width, this.bottom);
 	}
   
 	update() {
@@ -36,7 +36,7 @@ export class Pipe {
 	}
   
 	isOffScreen() {
-		if (this.x < -this.w) {
+		if (this.x < -this.width) {
 			return true;
 		} else {
 			return false;
