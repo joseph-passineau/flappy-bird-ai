@@ -115,37 +115,30 @@ export class Game {
 		}
 
 		this.calculateFitness();
-		this.birds = this.birds.sort((a, b) => (a.fitness > b.fitness) ? 1 : -1);
-
-		const loosers = this.birds.splice(0, Math.ceil(this.birds.length / 2));
-
-		for (const looser of loosers) {
-			looser.dispose();
-		}
+		this.birds = this.birds.sort((a, b) => (a.fitness < b.fitness) ? 1 : -1);
 
 		const newBirds = [];
-		if (this.generation % IMMIGRATION_EPOCH === 0) {
-
-			const loosers = this.birds.splice(0, Math.ceil(this.birds.length / 2));
-
-			for (const looser of loosers) {
-				looser.dispose();
-			}
-
-			for (let i = this.birds.length; i < POPULATION_SIZE; i++) {
-				this.birds.push(new Bird());
-			}
-		}
-		else {
-
-			for (const bird of this.birds) {
-				const babyBird = bird.makeBaby();
-				newBirds.push(babyBird);
-			}
+		for (let i = 0; i < POPULATION_SIZE; i++) {
+			const chosenBird = this.selection();
+			const babyBird = chosenBird.makeBaby();
+			newBirds.push(babyBird);
 		}
 
 		this.reset();
-		this.birds = this.birds.concat(newBirds);
+		this.birds = newBirds;
+	}
+
+	selection() {
+
+		let seed = Math.random();
+	
+		for (const bird of this.birds)
+		{
+			if (seed < bird.fitness) {
+				return bird;
+			}
+			seed -= bird.fitness;
+		}
 	}
 
 	calculateFitness() {
@@ -160,7 +153,7 @@ export class Game {
 		this.ticks = 0;
 		this.pipes = [];
 		for (const bird of this.birds) {
-			bird.reset();
+			bird.dispose();
 		}
 	}
 
