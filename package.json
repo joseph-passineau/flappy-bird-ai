@@ -11,6 +11,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@tensorflow/tfjs": "^1.4.0",
     "express": "^4.17.1",
     "open": "^7.0.0",
     "p5": "^0.10.2"
