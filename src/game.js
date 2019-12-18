@@ -1,6 +1,6 @@
-import { GAME_HEIGHT, GAME_MAX_TICKS, GAME_WIDTH } from './constants';
+import { BirdSelection, CalculateFitness } from '../exercices/exercice2';
 import { CreatePopulation, POPULATION_SIZE } from '../exercices/exercice1';
-import { CalculateFitness, BirdSelection } from '../exercices/exercice2';
+import { GAME_HEIGHT, GAME_MAX_TICKS, GAME_WIDTH } from './constants';
 
 import { Pipe } from './pipe';
 import { sketch } from './index';
@@ -116,8 +116,7 @@ export class Game {
 		CalculateFitness(this.birds);
 
 		const newBirds = [];
-		for (let i = 0; i < POPULATION_SIZE; i++) 
-		{
+		for (let i = 0; i < POPULATION_SIZE; i++) {
 			const chosenBird = BirdSelection(this.birds);
 			const babyBird = chosenBird.makeBaby();
 			newBirds.push(babyBird);

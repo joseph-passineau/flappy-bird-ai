@@ -1,25 +1,27 @@
 import { Bird } from '../src/bird';
 
-
 /* 
     Calculate the fitness of the birds
     The bird has a .fitness property that you can set.
 */
 export function CalculateFitness(birds) {
 
-} 
+	// TODO: set every bird .fitness property.
+}
 
 
 /* 
-    Calculate the fitness of the birds
+    Select the bird that will reproduce
     Use Roulette Selection
 
     Hint:
     Order the birds by descending fitness first.
+    
 */
 export function BirdSelection(birds) {
 
-    return birds[Math.floor(Math.random() * birds.length)];
+	// TODO: Return the lucky bird.
+	return birds[Math.floor(Math.random() * birds.length)];
 }
 
 
@@ -32,7 +34,7 @@ export function BirdSelection(birds) {
     This simply creates a new TensorFlow model, with the same weights.
 */
 export function MakeBaby(bird) {
-    const babyBird = new Bird();
+	const babyBird = new Bird();
 
-    return babyBird;
+	return babyBird;
 }

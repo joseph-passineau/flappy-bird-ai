@@ -1,39 +1,38 @@
 import { GAME_GRAVITY, GAME_HEIGHT } from './constants';
 
-import { sketch } from './index';
-import { Think } from '../exercices/exercice1';
 import { MakeBaby } from '../exercices/exercice2';
 import { Mutate } from '../exercices/exercice3';
+import { Think } from '../exercices/exercice1';
+import { sketch } from './index';
 
 const BIRD_X_POSITION = 64;
 const BIRD_LIFT = 12;
 
 export class Bird {
 	constructor(brain) {
-		this.brain = brain;	
+		this.brain = brain;
 		this.reset();
-		this.red = Math.floor(Math.random()*256);
-		this.green = Math.floor(Math.random()*256);
-		this.blue = Math.floor(Math.random()*256);
+		this.red = Math.floor(Math.random() * 256);
+		this.green = Math.floor(Math.random() * 256);
+		this.blue = Math.floor(Math.random() * 256);
 	}
 
 	dispose() {
-		if(this.brain)
-		{
+		if (this.brain) {
 			this.brain.dispose();
 		}
 	}
-  
+
 	draw() {
 		sketch.stroke(255);
 		sketch.fill(this.red, this.green, this.blue);
 		sketch.ellipse(this.x, this.y, BIRD_X_POSITION / 2, BIRD_X_POSITION / 2);
 	}
-  
+
 	up() {
 		this.velocity += this.lift;
 	}
-  
+
 	think(pipes) {
 
 		let closestPipe = null;
@@ -48,7 +47,7 @@ export class Bird {
 
 		Think(this, closestPipe);
 	}
-  
+
 	isOffScreen() {
 		return this.y > GAME_HEIGHT || this.y < 0;
 	}
@@ -67,10 +66,10 @@ export class Bird {
 	distanceToPipe(pipe) {
 		return pipe.x + pipe.width - this.x;
 	}
-  
+
 	update() {
 		this.score++;
-  
+
 		this.velocity += this.gravity;
 		this.y += this.velocity;
 	}
@@ -79,23 +78,23 @@ export class Bird {
 		const colorToChange = Math.floor(Math.random() * 3) + 1;
 		const colorChange = Math.random() < 0.5 ? -1 : 1;
 
-		switch(colorToChange){
-		case 1:
-			this.red + colorChange;
-			break;
-		case 2:
-			this.blue + colorChange;
-			break;
-		case 3:
-			this.green + colorChange;
-			break;
+		switch (colorToChange) {
+			case 1:
+				this.red + colorChange;
+				break;
+			case 2:
+				this.blue + colorChange;
+				break;
+			case 3:
+				this.green + colorChange;
+				break;
 		}
 	}
 
 	reset() {
 		this.y = GAME_HEIGHT / 2;
 		this.x = BIRD_X_POSITION;
-  
+
 		this.gravity = GAME_GRAVITY;
 		this.lift = BIRD_LIFT * -1;
 		this.velocity = 0;

@@ -10,5 +10,5 @@
     Try using a exponential Decay to calculate mutation
 */
 export function Mutate(bird) {
-    //bird.brain.mutate(0.1);
+	// bird.brain.mutate(0.1);
 } 

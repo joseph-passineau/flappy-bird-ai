@@ -6,12 +6,12 @@ import { Bird } from '../src/bird';
 */
 export function CalculateFitness(birds) {
 
-    let sum = birds.reduce((previous, current) => previous + current.score, 0);
+	let sum = birds.reduce((previous, current) => previous + current.score, 0);
 
-    for (const bird of birds) {
-        bird.fitness = bird.score / sum;
-    }
-} 
+	for (const bird of birds) {
+		bird.fitness = bird.score / sum;
+	}
+}
 
 
 /* 
@@ -22,17 +22,16 @@ export function CalculateFitness(birds) {
     Order the birds by descending fitness.
 */
 export function BirdSelection(birds) {
-    birds = birds.sort((a, b) => (a.fitness < b.fitness) ? 1 : -1);
+	birds = birds.sort((a, b) => (a.fitness < b.fitness) ? 1 : -1);
 
-    let seed = Math.random();
+	let seed = Math.random();
 
-    for (const bird of birds)
-    {
-        if (seed < bird.fitness) {
-            return bird;
-        }
-        seed -= bird.fitness;
-    }
+	for (const bird of birds) {
+		if (seed < bird.fitness) {
+			return bird;
+		}
+		seed -= bird.fitness;
+	}
 }
 
 /*
@@ -44,8 +43,8 @@ export function BirdSelection(birds) {
     This simply creates a new TensorFlow model, with the same weights.
 */
 export function MakeBaby(bird) {
-    const newBrain = bird.brain.copy();
-    const babyBird = new Bird(newBrain);
-    babyBird.score = bird.score;
-    return babyBird;
+	const newBrain = bird.brain.copy();
+	const babyBird = new Bird(newBrain);
+	babyBird.score = bird.score;
+	return babyBird;
 }

@@ -1,10 +1,11 @@
 import * as tf from '@tensorflow/tfjs';
-import { sketch } from './index';
+
 import { CreateModel } from '../exercices/exercice1';
+import { sketch } from './index';
 
 export class Brain {
 	constructor(model) {
-        this.model = model;
+		this.model = model;
 	}
 
 	dispose() {
@@ -32,7 +33,7 @@ export class Brain {
 			return new Brain(modelCopy);
 		});
 	}
-    
+
 	mutate(rate) {
 		tf.tidy(() => {
 			const weights = this.model.getWeights();
