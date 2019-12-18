@@ -15,7 +15,7 @@ export function CalculateFitness(birds) {
     Use Roulette Selection
 
     Hint:
-    Order the birds by descending fitness first.
+    The birds are already ordered by descending fitness.
     
 */
 export function BirdSelection(birds) {

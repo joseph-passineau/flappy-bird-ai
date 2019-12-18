@@ -17,17 +17,13 @@ export function CalculateFitness(birds) {
 /* 
     Calculate the fitness of the birds
     Use Roulette Selection
-
-    Hint:
-    Order the birds by descending fitness.
 */
 export function BirdSelection(birds) {
-	birds = birds.sort((a, b) => (a.fitness < b.fitness) ? 1 : -1);
 
 	let seed = Math.random();
 
 	for (const bird of birds) {
-		if (seed < bird.fitness) {
+		if (seed <= bird.fitness) {
 			return bird;
 		}
 		seed -= bird.fitness;

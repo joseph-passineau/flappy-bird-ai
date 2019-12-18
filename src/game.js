@@ -114,6 +114,7 @@ export class Game {
 		}
 
 		CalculateFitness(this.birds);
+		this.birds = this.birds.sort((a, b) => (a.fitness < b.fitness) ? 1 : -1);
 
 		const newBirds = [];
 		for (let i = 0; i < POPULATION_SIZE; i++) {

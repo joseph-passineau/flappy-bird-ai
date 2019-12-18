@@ -1,6 +1,6 @@
 import * as tf from '@tensorflow/tfjs';
 
-import { GAME_HEIGHT, GAME_WIDTH } from '../src/constants';
+import { GAME_HEIGHT, GAME_WIDTH, MAX_VELOCITY } from '../src/constants';
 
 import { Bird } from '../src/bird';
 import { Brain } from '../src/brain';
@@ -58,7 +58,7 @@ export function Think(bird, closestPipe) {
 	inputs.push(closestPipe.top / GAME_HEIGHT);
 	inputs.push(closestPipe.bottom / GAME_HEIGHT);
 	inputs.push(closestPipe.x / GAME_WIDTH);
-	inputs.push(bird.velocity / 10);
+	inputs.push(bird.velocity / MAX_VELOCITY);
 
 	const output = bird.brain.predict(inputs);
 	if (output[0] > output[1]) {
